@@ -1,16 +1,20 @@
 # A. S. Nielsen 2021
 
 
-def verMod11(cprNumbVect):
+def verMod11(cprNumbStr):
     """Perform modulus 11 check for validity of CPR-number"""
+    #Input:
+        #cprNumbStr, str[10], holds a full CPR number
+    #Output:
+        #True/False, logical, returns failure or succes of check
     
-    if len(cprNumbVect) != 10:
+    if len(cprNumbStr) != 10:
         raise ValueError("CPR-number to be validated must be 10 ciphers.")
     
     sumation = 0
     cntrlVect = [4,3,2,7,6,5,4,3,2,1]
     for index in range(len(cntrlVect)):
-        sumation += int(cprNumbVect[index])*cntrlVect[index]
+        sumation += int(cprNumbStr[index])*cntrlVect[index]
     rem = sumation % 11
     
     if rem == 0:
@@ -18,19 +22,25 @@ def verMod11(cprNumbVect):
     else:
         return False
 
-def genMod11Cipher(cprNumbVect):
+def genMod11Cipher(cprNumbStr):
     """Generate the 10th control cipher given the 9 previous. Returns string holding all 10 ciphers. Return None if control cipher cannot be generated."""
+    #Input:
+        #cprNumbStr, str[9], holds 9 first ciphers of CPR number
+    #Output: 
+        #fullCprNumber, None or str[10], full CPR number at succes, None at failure.
+    
     sumation = 0
     cntrlVect = [4,3,2,7,6,5,4,3,2,1]
     for index in range(9): #Notice that the loop is only over 9 indices.
-        sumation += int(cprNumbVect[index]) * cntrlVect[index]
+        sumation += int(cprNumbStr[index]) * cntrlVect[index]
     rem = sumation % 11
     if rem == 0:
         cipher10 = 0
     else:
         cipher10 = 11-rem #Calc. how much should be added to rem to make the remainder zero
-    if cipher10 != 10:
-        return cprNumbVect+str(cipher10)
+    
+    if cipher10 != 10: #Cipher most be integer btw 0-9
+        return cprNumbStr+str(cipher10)
     else:
         return None
         
@@ -38,9 +48,15 @@ def genMod11Cipher(cprNumbVect):
 
 def gen7CipherList(birthYear):
     """Takes an integer birthyear and returns a sorted list of possible 7th CPR digit"""
+    #Input:
+        #birthYear, int, an integer indicating year of birth
+    #Output:
+        #poss7Cipher, list of str[1], ordered list of possible 7th cipher. Empty list if birthYear is out of range.
+    
     #Note: While one can speculate how CPR numbers will be extended to years
     #beyond 2057, it is currently not defined. I therefor opted for this simple
     #implementation.
+    
     if birthYear >= 1858 and birthYear < 1900:
         return ['5','6','7','8']
     elif birthYear >= 1900 and birthYear < 1937:
@@ -65,7 +81,7 @@ def sexCheck(sex, cprString):
     
     return int(cprString[-1]) % 2 == sex
     
-### WIP ###    
+
 def generateCpr(birthDateAndSex,N=40):
     """Generate sorted CPR-number list given birthDate and sex."""
     #Input:
@@ -95,16 +111,13 @@ def generateCpr(birthDateAndSex,N=40):
             if cnt == N:
                 break
             for cipher9 in "0123456789":
+                if cnt == N:
+                    break
                 first9 = first6+cipher7+cipher8+cipher9
                 possCPR = genMod11Cipher(first9)
                 if possCPR != None and sexCheck(sex,possCPR):
                     cprList.append(possCPR)
                     cnt +=1
-                if cnt == N:
-                    break
-                
                 
     return cprList
 
-
-# cprList = generateCpr("01061990F",1000)
