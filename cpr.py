@@ -1,5 +1,6 @@
 # A. S. Nielsen 2021
 
+#As of yet only modulus 11 valid CPR-numbers are covered.
 
 def verMod11(cprNumbStr):
     """Perform modulus 11 check for validity of CPR-number"""
@@ -82,7 +83,7 @@ def sexCheck(sex, cprString):
     return int(cprString[-1]) % 2 == sex
     
 
-def generateCpr(birthDateAndSex,N=40):
+def generateCpr(birthDateAndSex,N=1000):
     """Generate sorted CPR-number list given birthDate and sex."""
     #Input:
         #birthDateAndSex, str, formatted as DDMMYYYY[sex], where sex is M for male and F for female.
@@ -121,3 +122,65 @@ def generateCpr(birthDateAndSex,N=40):
                 
     return cprList
 
+
+# =============================================================================
+# Command-line interface:
+# =============================================================================
+
+#This section of code will only be run if the module is executed directly as a
+#script, e.g. in a LINUX terminal.
+
+#It is a WIP and is currently lacking input validation. Output format could 
+#also be optimised, such that more CPR-numbers are printed per line.
+
+if __name__ == "__main__":
+    import sys
+    
+    if len(sys.argv) == 1: #No terminal input
+        inputCPR = input("Please enter a CPR number to validate (DDMMYYCCCC) OR enter a birthdate and sex (DDMMYYYYS,S=F/M): ")
+        ### INPUT VALIDATION! ###
+        if len(inputCPR) == 10: #Validate CPR
+            if verMod11(inputCPR):
+                print("CPR number is valid", file = sys.stdout)
+            else:
+                print("CPR number is invalid", file = sys.stdout)
+        elif len(inputCPR) == 9: #Generate CPR
+            cprList = generateCpr(inputCPR)
+            for cprNumb in cprList:
+                print(cprNumb, file = sys.stdout)
+    
+    elif len(sys.argv) == 2: #1 terminal input
+        inputCPR = sys.argv[1]
+        ### INPUT VALIDATION! ###
+        if len(inputCPR) == 10: #Validate CPR
+            if verMod11(inputCPR):
+                print("CPR number is valid", file = sys.stdout)
+            else:
+                print("CPR number is invalid", file = sys.stdout)
+        elif len(inputCPR) == 9: #Generate CPR
+            cprList = generateCpr(inputCPR)
+            for cprNumb in cprList:
+                print(cprNumb, file = sys.stdout)
+                
+    elif len(sys.argv) == 3: #2 terminal inputs
+        try:
+            inFile = open(sys.argv[1],'r')
+        except IOError as err:
+            print("Unable to open input file. Reason:", str(err))
+            sys.exit(1)
+        try:
+            outFile = open(sys.argv[2],'w')
+        except IOError as err:
+            print("Unable to open output file. Reason:", str(err))
+            sys.exit(1)
+            
+        for line in inFile:
+            birthDateAndSex = line.strip()
+            ### INPUT VALIDATION ###
+            cprList = generateCpr(birthDateAndSex)
+            print(">",birthDateAndSex,"has",str(len(cprList)),"valid CPR numbers:",file = outFile)
+            for cprNumb in cprList:
+                print(cprNumb,file=outFile)
+            print("\\\\",file=outFile)
+                
+                
