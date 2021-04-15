@@ -3,11 +3,14 @@
 #As of yet only modulus 11 valid CPR-numbers are covered.
 
 def verMod11(cprNumbStr):
-    """Perform modulus 11 check for validity of CPR-number"""
-    #Input:
-        #cprNumbStr, str[10], holds a full CPR number
-    #Output:
-        #True/False, logical, returns failure or succes of check
+    """Perform modulus 11 check for validity of CPR-number.
+    
+    Input:
+        cprNumbStr, str[10], holds a full CPR number
+    Output:
+        True/False, logical, returns failure or succes of check
+    """
+
     
     if len(cprNumbStr) != 10:
         raise ValueError("CPR-number to be validated must be 10 ciphers.")
@@ -24,11 +27,15 @@ def verMod11(cprNumbStr):
         return False
 
 def genMod11Cipher(cprNumbStr):
-    """Generate the 10th control cipher given the 9 previous. Returns string holding all 10 ciphers. Return None if control cipher cannot be generated."""
-    #Input:
-        #cprNumbStr, str[9], holds 9 first ciphers of CPR number
-    #Output: 
-        #fullCprNumber, None or str[10], full CPR number at succes, None at failure.
+    """Generate the 10th control cipher given the 9 previous. Returns string 
+    holding all 10 ciphers. Return None if control cipher cannot be generated.
+    
+    Input:
+        cprNumbStr, str[9], holds 9 first ciphers of CPR number
+    Output: 
+        fullCprNumber, None or str[10], full CPR number at succes, None at 
+            failure.
+    """
     
     sumation = 0
     cntrlVect = [4,3,2,7,6,5,4,3,2,1]
@@ -48,11 +55,16 @@ def genMod11Cipher(cprNumbStr):
     
 
 def gen7CipherList(birthYear):
-    """Takes an integer birthyear and returns a sorted list of possible 7th CPR digit"""
-    #Input:
-        #birthYear, int, an integer indicating year of birth
-    #Output:
-        #poss7Cipher, list of str[1], ordered list of possible 7th cipher. Empty list if birthYear is out of range.
+    """Takes an integer birthyear and returns a sorted list of possible 7th 
+    CPR digit
+    
+    Input:
+        birthYear, int, an integer indicating year of birth
+    Output:
+        poss7Cipher, list of str[1], ordered list of possible 7th cipher. 
+            Empty list if birthYear is out of range.
+    """
+    
     
     #Note: While one can speculate how CPR numbers will be extended to years
     #beyond 2057, it is currently not defined. I therefor opted for this simple
@@ -73,23 +85,29 @@ def gen7CipherList(birthYear):
         return []
 
 def sexCheck(sex, cprString):
-    """Check that the known sex matches that of the CPR-number"""
-    #Input:
-        #sex, int, 0 for female, 1 for male.
-        #cprString, str[10], holds a CPR-number
-    #Output:
-        #True/False, logical, True if sex matches, False if it does not.
+    """Check that the known sex matches that of the CPR-number
+    
+    Input:
+        sex, int, 0 for female, 1 for male.
+        cprString, str[10], holds a CPR-number
+    Output:
+        True/False, logical, True if sex matches, False if it does not.
+    """
+    
     
     return int(cprString[-1]) % 2 == sex
     
 
 def generateCpr(birthDateAndSex,N=1000):
-    """Generate sorted CPR-number list given birthDate and sex."""
-    #Input:
-        #birthDateAndSex, str, formatted as DDMMYYYY[sex], where sex is M for male and F for female.
-        #N, int, Maximum amount of CPR-numbers to be generated.
-    #Output:
-        #cprList, sorted (asc) list of valid CPR numbers formated as strings.
+    """Generate sorted CPR-number list given birthDate and sex.
+    
+    Input:
+        birthDateAndSex, str, formatted as DDMMYYYY[sex], where sex is M for male and F for female.
+        N, int, Maximum amount of CPR-numbers to be generated.
+    Output:
+        cprList, sorted (asc) list of valid CPR numbers formated as strings.
+    """
+    
     #Note: This function assumes previus input control.
     
     cprList = list()
@@ -97,8 +115,10 @@ def generateCpr(birthDateAndSex,N=1000):
     
     if birthDateAndSex[-1].upper() == 'M':
         sex = 1
-    else:
+    elif birthDateAndSex[-1].upper() == 'F':
         sex = 0
+    else:
+        raise ValueError('Invalid sex input. Please check input birthdate and sex')
     
     birthDate = birthDateAndSex[0:8]
     
