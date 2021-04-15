@@ -3,3 +3,6 @@
 
 #Folders used in development:
 refs
+
+#Private test-files:
+test*.txt
