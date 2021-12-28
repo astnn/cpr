@@ -1,6 +1,6 @@
 # cpr
 Python module for validating and generating ID numbers as used in the Danish CPR-registry.\
-By A. S. Nielsen, 2021. Released under the MIT License. The full licence is included in the LICENSE.txt-file.
+By A. S. Nielsen, 2021. Released under the MIT License. The full licence is included in the LICENSE-file.
 
 ## Description
 Small personal pet project intented teach myself how the Danish CPR-numbers are created and can be used in a larger IT-system.
@@ -20,7 +20,7 @@ I am currently also debating with myself how to store the data. Currently CPR-nu
 
 #### Missing functionalities:
 - Support for CPR-numbers without Modulus 11 control,
-- Unit test
+- Unit tests,
 - Input validation.
 
 #### Possible expansions:
