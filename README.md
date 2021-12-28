@@ -20,6 +20,7 @@ I am currently also debating with myself how to store the data. Currently CPR-nu
 
 #### Missing functionalities:
 - Support for CPR-numbers without Modulus 11 control,
+- Unit test
 - Input validation.
 
 #### Possible expansions:
