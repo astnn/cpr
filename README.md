@@ -1,5 +1,5 @@
 # cpr
-Python module for validating and generating ID numbers as used in the Danish CPR-registry.
+Python module for validating and generating ID numbers as used in the Danish CPR-registry.\
 By A. S. Nielsen, 2021. Released under the MIT License. The full licence is included in the LICENSE.txt-file.
 
 ## Description
